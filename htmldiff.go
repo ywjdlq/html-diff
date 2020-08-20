@@ -34,6 +34,7 @@ type Config struct {
 	Granularity                             int         // how many letters to put together for a change, if possible
 	InsertedSpan, DeletedSpan, ReplacedSpan []Attribute // the attributes for the span tags wrapping changes
 	CleanTags                               []string    // HTML tags to clean from the input
+	Timeout									int
 }
 
 // HTMLdiff finds all the differences in the versions of HTML snippits,
@@ -92,7 +93,7 @@ func (c *Config) HTMLdiff(versions []string) ([]string, error) {
 			go func(ch chan []diff.Change) {
 				ch <- diff.Diff(len(*sourceTreeRunes[0]), len(*sourceTreeRunes[m+1]), dd)
 			}(ch)
-			to := time.After(time.Second * 3)
+			to := time.After(time.Second * c.Timeout)
 			select {
 			case <-to:
 				parallelErrors <- errors.New("diff.Diff() took too long")
