@@ -34,7 +34,7 @@ type Config struct {
 	Granularity                             int         // how many letters to put together for a change, if possible
 	InsertedSpan, DeletedSpan, ReplacedSpan []Attribute // the attributes for the span tags wrapping changes
 	CleanTags                               []string    // HTML tags to clean from the input
-	Timeout									int
+	Timeout									time.Duration
 }
 
 // HTMLdiff finds all the differences in the versions of HTML snippits,
